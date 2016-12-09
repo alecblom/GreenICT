@@ -6,19 +6,26 @@
         xmlns:local="clr-namespace:GreenICT"
         mc:Ignorable="d"
         Background="{StaticResource primaryDark}"
-        Title="GameWindow" Height="823.5" Width="1200">
+        Title="GameWindow" Height="823.5" Width="1336">
     <StackPanel>
 
         <TextBlock 
         Foreground="{StaticResource secondaryDark}"
         x:Name="textBlock" 
         HorizontalAlignment="Left" 
-        Margin="25,25,0,0" 
+        Margin="25,22,0,0" 
         TextWrapping="Wrap" 
         VerticalAlignment="Top" 
-        Height="66" Width="1137"
+        Height="66" Width="1274"
         FontSize="45" RenderTransformOrigin="0.5,0.5">
-           
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="-0.078"/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-0.749"/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
 
         <Bold>Click one of the images below to select it.</Bold></TextBlock>
 
@@ -26,6 +33,7 @@
         <Grid 
         	x:Name="dataGrid" 
         	Margin="25,0" 
+        	RenderTransformOrigin="0.5,2.154"
         	Height="600"
           
         	Background="{StaticResource BackGroundColour}">
