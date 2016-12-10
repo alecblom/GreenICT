@@ -27,7 +27,7 @@ namespace GreenICT
             //DatabaseHandler dh = new DatabaseHandler();
             //dh.getGameObjects();
             GameController g = new GameController();
-            g.init_game(10);
+            g.init_game(16);
         }
 
         private void gen_grid(int size)

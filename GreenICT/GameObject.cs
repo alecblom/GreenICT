@@ -33,5 +33,10 @@ namespace GreenICT
 
             id = DatabaseHandler.CreateNewGameObject(name, type, url, description);
         }
+
+        public int getId()
+        {
+            return this.id;
+        }
     }
 }

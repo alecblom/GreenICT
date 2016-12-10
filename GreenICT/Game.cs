@@ -24,10 +24,12 @@ namespace GreenICT
             }
         }
 
-        public Game()
+        public Game(int id, List<GameObject> gameObjects)
         {
-
+            this.id = id;
+            this.gameObjects = gameObjects;
         }
+
 
     }
 }
