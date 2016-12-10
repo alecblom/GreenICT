@@ -11,7 +11,7 @@ namespace GreenICT
         private int id;
         private string name;
         private string type;
-        private string url;
+        public string url { get; set; }
         private string description;
 
         public GameObject(int id)
@@ -22,6 +22,16 @@ namespace GreenICT
             type = data[1];
             url = data[2];
             description = data[3];
+        }
+
+        public GameObject(string name, string type, string url, string description)
+        {
+            this.name = name;
+            this.type = type;
+            this.url = url;
+            this.description = description;
+
+            id = DatabaseHandler.CreateNewGameObject(name, type, url, description);
         }
     }
 }

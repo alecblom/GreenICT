@@ -11,10 +11,6 @@ namespace GreenICT
 {
     class DatabaseHandler
     {
-        public DatabaseHandler()
-        {
-
-        }
 
         static public List<string> initGameObject(int id)
         {
@@ -60,7 +56,7 @@ namespace GreenICT
 
                 while (reader.Read())
                 {
-                    data.Add((int)reader["value"]);
+                    data.Add((int)reader["gameobject_gameObjectId"]);
                 }
             }
             catch (Exception ex)
@@ -72,10 +68,8 @@ namespace GreenICT
             return data;
         }
 
-        public String getImageUrl(int objectId)
+        static public int CreateNewGameObject(string name, string type, string url, string description)
         {
-            String result = "Something went wrong";
-            int category = 3;
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);
             try
@@ -83,12 +77,25 @@ namespace GreenICT
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations
-                MySqlCommand cmd = new MySqlCommand("SELECT value FROM metadata WHERE Category_categoryid = " + category + " AND GameObject_GameObjectId = " + objectId, conn);
-                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
-                DataSet ds = new DataSet();
-                adp.Fill(ds, "LoadDataBinding");
-                Object raw = cmd.ExecuteScalar();
-                result = (String)raw;
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameObject(timestamp) VALUES(NOW())", conn);
+                cmd1.ExecuteNonQuery();
+                int objID = (int)cmd1.LastInsertedId;
+                MySqlCommand cmd2 = new MySqlCommand("INSERT INTO metadata(value, category_categoryId, GameObject_gameObjectId) VALUES(@value, @category, " + objID + ")", conn);
+                cmd2.Parameters.AddWithValue("@value", name);
+                cmd2.Parameters.AddWithValue("@category", 1);
+                cmd2.ExecuteNonQuery();
+
+                cmd2.Parameters["@value"].Value = type;
+                cmd2.Parameters["@category"].Value = 2;
+                cmd2.ExecuteNonQuery();
+
+                cmd2.Parameters["@value"].Value = url;
+                cmd2.Parameters["@category"].Value = 3;
+                cmd2.ExecuteNonQuery();
+
+                cmd2.Parameters["@value"].Value = description;
+                cmd2.Parameters["@category"].Value = 4;
+                cmd2.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -96,7 +103,7 @@ namespace GreenICT
             }
             conn.Close();
             Console.WriteLine("Done.");
-            return result;
+            return 1;
         }
 
 
