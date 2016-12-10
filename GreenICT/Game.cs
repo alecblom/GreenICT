@@ -11,15 +11,22 @@ namespace GreenICT
         private int id;
         private List<GameObject> gameObjects;
 
+
+        //Get game by id from database and init it 
         public Game(int id)
         {
             this.id = id;
             List<int> data = DatabaseHandler.initGame(id);
-            foreach(int objectId in data)
+            foreach (int objectId in data)
             {
                 GameObject go = new GameObject(objectId);
                 gameObjects.Add(go);
             }
+        }
+
+        public Game()
+        {
+
         }
 
     }
