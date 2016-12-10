@@ -80,7 +80,9 @@ namespace GreenICT
                  i = new Image();
                  src = new BitmapImage();
                 src.BeginInit();
-                src.UriSource = new Uri("C:\\AppImages\\harold1.jpg", UriKind.Relative);
+                DatabaseHandler dbh = new DatabaseHandler();
+                String imgurl = dbh.getImageUrl(3);
+                src.UriSource = new Uri(imgurl, UriKind.Relative);
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
                 i.Source = src;
@@ -95,7 +97,7 @@ namespace GreenICT
                      i = new Image();
                      src = new BitmapImage();
                     src.BeginInit();
-                    src.UriSource = new Uri("C:\\AppImages\\harold1.jpg", UriKind.Relative);
+                    src.UriSource = new Uri(imgurl, UriKind.Relative);
                     src.CacheOption = BitmapCacheOption.OnLoad;
                     src.EndInit();
                     i.Source = src;
