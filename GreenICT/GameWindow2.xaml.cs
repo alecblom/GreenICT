@@ -76,9 +76,9 @@ namespace GreenICT
             Image i;
             BitmapImage src;
             for(int outter = 0; outter < col_count; outter++){
-
-                 i = new Image();
-                 src = new BitmapImage();
+                GameObject go = new GameObject(inner + 1);
+                i = new Image();
+                src = new BitmapImage();
                 src.BeginInit();
                 DatabaseHandler dbh = new DatabaseHandler();
                 String imgurl = dbh.getImageUrl(3);

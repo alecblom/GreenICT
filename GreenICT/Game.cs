@@ -8,5 +8,19 @@ namespace GreenICT
 {
     class Game
     {
+        private int id;
+        private List<GameObject> gameObjects;
+
+        public Game(int id)
+        {
+            this.id = id;
+            List<int> data = DatabaseHandler.initGame(id);
+            foreach(int objectId in data)
+            {
+                GameObject go = new GameObject(objectId);
+                gameObjects.Add(go);
+            }
+        }
+
     }
 }
