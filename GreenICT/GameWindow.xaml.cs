@@ -59,39 +59,39 @@ namespace GreenICT
 
             }
 
-           /* Image i = new Image();
-            BitmapImage src2 = new BitmapImage();
-            src2.BeginInit();
-            src2.UriSource = new Uri("C:\\AppImages\\harold" + 2 + ".jpg", UriKind.Relative);
-            src2.CacheOption = BitmapCacheOption.OnLoad;
-            src2.EndInit();
-            i.Source = src2;
-            i.Width = 300;
-            i.Height = 200;
-            i.Stretch = Stretch.Uniform;
-            Grid.SetRow(i, 0);
-            Grid.SetColumn(i, 1);
-            dataGrid.Children.Add(i);
-            Image i2 = new Image();
-            BitmapImage src3 = new BitmapImage();
-            src3.BeginInit();
-            src3.UriSource = new Uri("C:\\AppImages\\harold" + 3 + ".jpg", UriKind.Relative);
-            src3.CacheOption = BitmapCacheOption.OnLoad;
-            src3.EndInit();
-            i2.Source = src2;
-            i2.Width = 300;
-            i2.Height = 200;
-            i2.Stretch = Stretch.Uniform;
-            Grid.SetRow(i2, 0);
-            Grid.SetColumn(i2, 0);
-            dataGrid.Children.Add(i2);*/
+            /* Image i = new Image();
+             BitmapImage src2 = new BitmapImage();
+             src2.BeginInit();
+             src2.UriSource = new Uri("C:\\AppImages\\harold" + 2 + ".jpg", UriKind.Relative);
+             src2.CacheOption = BitmapCacheOption.OnLoad;
+             src2.EndInit();
+             i.Source = src2;
+             i.Width = 300;
+             i.Height = 200;
+             i.Stretch = Stretch.Uniform;
+             Grid.SetRow(i, 0);
+             Grid.SetColumn(i, 1);
+             dataGrid.Children.Add(i);
+             Image i2 = new Image();
+             BitmapImage src3 = new BitmapImage();
+             src3.BeginInit();
+             src3.UriSource = new Uri("C:\\AppImages\\harold" + 3 + ".jpg", UriKind.Relative);
+             src3.CacheOption = BitmapCacheOption.OnLoad;
+             src3.EndInit();
+             i2.Source = src2;
+             i2.Width = 300;
+             i2.Height = 200;
+             i2.Stretch = Stretch.Uniform;
+             Grid.SetRow(i2, 0);
+             Grid.SetColumn(i2, 0);
+             dataGrid.Children.Add(i2);*/
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
 
-          
+
+
         }
 
         private void textBox_TextChanged(object sender, TextChangedEventArgs e)

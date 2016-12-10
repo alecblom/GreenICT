@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:GreenICT"
         mc:Ignorable="d"
         Background="{StaticResource primaryDark}"
-        Title="GameWindow" Height="823.5" Width="1336">
+        Title="GameWindow" Height="825" Width="1200">
     <StackPanel>
 
         <TextBlock 
@@ -32,23 +32,24 @@
         <Rectangle Margin="25 0 25 10" HorizontalAlignment="Stretch" Fill="{StaticResource secondaryDark}" Height="4"/>
         <Grid 
         	x:Name="dataGrid" 
-        	Margin="25,0" 
+        	Margin="25,4" 
         	RenderTransformOrigin="0.5,2.154"
         	Height="600"
           
         	Background="{StaticResource BackGroundColour}">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="200" />
-                <RowDefinition Height="200" />
-                <RowDefinition Height="200" />
-                <RowDefinition Height="200" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="300" />
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
         </Grid>
         <Button 
