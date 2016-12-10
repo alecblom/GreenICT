@@ -71,10 +71,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controller\GameController.cs" />
     <Compile Include="DatabaseHandler.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameBoard.cs" />
-    <Compile Include="GameObject.cs" />
+    <Compile Include="Model\Game.cs" />
+    <Compile Include="Model\GameBoard.cs" />
+    <Compile Include="Model\GameObject.cs" />
     <Compile Include="GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
@@ -87,8 +88,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Metadata.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Model\Metadata.cs" />
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -114,6 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="View\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
