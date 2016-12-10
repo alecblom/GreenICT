@@ -9,34 +9,41 @@ namespace GreenICT.Controller
     class GameController
     {
         private Random rng = new Random();
-        Game curGame;
+       
         
-        public void init_game(List<Player> players,int gameObj_amount) //gameobjamount - 20/24/30
+        public List<GameObject> init_game(int gameObj_amount) //gameobjamount - 20/24/30
         {
-            //TODO add some test values and test shuffle
-            //implement getting gameobjects + their metadata and storing them in the game object 
 
-
-            List<GameObject> gameobjects = new List<GameObject>();
-
-            //TODO Get amount of game objects from database (random)
-            //TODO Retrieve metdata for all game objects
-            
-            //Copy and scatter game objects
-            foreach(GameObject element in gameobjects)
-            {
-                gameobjects.Add(element);
-            }
+            //Get all game objects
+            DatabaseHandler dh = new DatabaseHandler();
+            List<GameObject> ret = dh.getGameObjects();             //List used to store return value from database
+            List<GameObject> randomgameObjects = new List<GameObject>();  //List used to store randomly chosen objects
+            List<GameObject> finalgameObjects;
           
-            //Store these in the game's gameobjects list 
+            //Get required amount of random gameobjs from ret
+            if ((gameObj_amount / 2) > ret.Count)
+            {
+                Console.WriteLine("Not enough game objects to create this game !");
+                return null;
+            }
+            else
+            {
+                Random rnd = new Random();
+                for (int c = 0; c < gameObj_amount / 2; c++)
+                {
+                    int r = rnd.Next(ret.Count);
+                    randomgameObjects.Add(ret[r]);
+                    ret.Remove(ret[r]);  //Remove added value so we dont end up adding the same gameobject twice
+                }
+                
+            }
 
-            //Set as current game
+            //Copy and scatter game objects
+            finalgameObjects = new List<GameObject>(randomgameObjects);
+            finalgameObjects.AddRange(randomgameObjects);
+            shuffle(finalgameObjects);
 
-
-
-            Game g = new Game();
-            g.players = players;
-            
+            return finalgameObjects;
         }
 
         //Shuffle gameobj list usng fisher yates shuffle

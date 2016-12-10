@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreenICT.Controller;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,8 +23,11 @@ namespace GreenICT
         public GameWindow2()
         {
             InitializeComponent();
-           gen_grid(30); //input grid size 20/24/30
-            
+            // gen_grid(30); //input grid size 20/24/30
+            //DatabaseHandler dh = new DatabaseHandler();
+            //dh.getGameObjects();
+            GameController g = new GameController();
+            g.init_game(10);
         }
 
         private void gen_grid(int size)

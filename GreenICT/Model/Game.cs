@@ -11,6 +11,8 @@ namespace GreenICT
         private int id;
         private List<GameObject> gameObjects;
 
+
+        //Get game by id from database and init it 
         public Game(int id)
         {
             this.id = id;
@@ -20,6 +22,11 @@ namespace GreenICT
                 GameObject go = new GameObject(objectId);
                 gameObjects.Add(go);
             }
+        }
+
+        public Game()
+        {
+
         }
 
     }

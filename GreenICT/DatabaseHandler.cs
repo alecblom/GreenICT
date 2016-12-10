@@ -98,5 +98,34 @@ namespace GreenICT
             Console.WriteLine("Done.");
             return result;
         }
+
+
+        public List<GameObject> getGameObjects()
+        {
+            List<GameObject> data = new List<GameObject>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT* FROM gameObject", conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data.Add(new GameObject(reader.GetInt32("gameObjectId")));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return data;
+        }
     }
 }
