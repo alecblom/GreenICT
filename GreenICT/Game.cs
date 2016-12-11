@@ -30,6 +30,15 @@ namespace GreenICT
             this.gameObjects = gameObjects;
         }
 
+        public List<GameObject> getGameObjects()
+        {
+            return gameObjects;
+        }
+        public int getId()
+        {
+            return id;
+        }
+
 
     }
 }

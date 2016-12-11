@@ -141,7 +141,7 @@ namespace GreenICT
             return data;
         }
 
-        static public int CreateGame()
+        static public int createGame()
         {
             int objID = 0;
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
@@ -166,7 +166,7 @@ namespace GreenICT
             Console.WriteLine("Done.");
             return objID;
         }
-        static public int BindGame_GameObj(int gameId,int gameObjId)
+        static public int bindGame_GameObj(int gameId,int gameObjId)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);

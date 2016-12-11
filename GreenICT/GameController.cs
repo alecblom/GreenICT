@@ -9,10 +9,9 @@ namespace GreenICT.Controller
     class GameController
     {
         private Random rng = new Random();
-        Game curGame;
+        private Game curGame;
         /**
-        Create a new game 
-        Return a list of randomized gameobject ready for displaying on the gamefield
+        Create a new game and save it in the curGame variable
         */
         public void init_game(int gameObj_amount) //gameobjamount - 20/24/30
         {
@@ -40,7 +39,7 @@ namespace GreenICT.Controller
                 
             }
             //insert new game and get its id
-            int newGameId = DatabaseHandler.CreateGame();
+            int newGameId = DatabaseHandler.createGame();
             if (newGameId == 0)
             {
                 Console.WriteLine("Error occured while tryin to add game to database");
@@ -50,7 +49,7 @@ namespace GreenICT.Controller
                 //Bind used gameobjects to this id
                 foreach (GameObject gameObj in randomgameObjects)
                 {
-                    DatabaseHandler.BindGame_GameObj(newGameId, gameObj.getId());
+                    DatabaseHandler.bindGame_GameObj(newGameId, gameObj.getId());
                 }
             }
             //Copy and scatter game objects
@@ -60,6 +59,13 @@ namespace GreenICT.Controller
 
             //Save all this to a game object
             curGame = new Game(newGameId, finalgameObjects);
+        }
+
+
+
+        public Game getCurrentGame()
+        {
+            return curGame;
         }
 
         //Shuffle gameobj list usng fisher yates shuffle

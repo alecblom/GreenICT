@@ -18,19 +18,26 @@ namespace GreenICT
     /// <summary>
     /// Interaction logic for GameWindow2.xaml
     /// </summary>
+    /// 
+
+
+        //implement lowest amount of pictures in database to creae 20 sized game
+        //call gen grid using results from init game 
+        //
     public partial class GameWindow2 : Window
     {
         public GameWindow2()
         {
+            int gameSizeRequested = 20;
             InitializeComponent();
-            // gen_grid(30); //input grid size 20/24/30
-            //DatabaseHandler dh = new DatabaseHandler();
-            //dh.getGameObjects();
             GameController g = new GameController();
-            g.init_game(16);
+            g.init_game(gameSizeRequested);
+            Game game = g.getCurrentGame();
+            gen_grid(gameSizeRequested, game);
+
         }
 
-        private void gen_grid(int size)
+        private void gen_grid(int size, Game game)
         {
             int col_count;
             int row_count;
@@ -67,39 +74,32 @@ namespace GreenICT
                 GameWindowGrid.RowDefinitions.Add(row);
             }
 
-            fillGrid(col_count, row_count);
+            fillGrid(col_count, row_count, game);
 
         }
 
-        private void fillGrid(int cc, int rc)
-        {
-
+        private void fillGrid(int cc, int rc,Game game)
+        { 
             int col_count = cc;
             int row_count = rc;
             int inner = 0;
+            int imageIndex = 0;
             Image i;
             BitmapImage src;
-            for(int outter = 0; outter < col_count; outter++){
-                GameObject go = new GameObject(inner + 1);
-                i = new Image();
-                src = new BitmapImage();
-                src.BeginInit();
-                src.UriSource = new Uri(go.url, UriKind.Relative);
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.EndInit();
-                i.Source = src;
-                i.Stretch = Stretch.Uniform;
+            List<GameObject> gameObjects = game.getGameObjects();
 
-                Grid.SetRow(i, inner);
-                Grid.SetColumn(i, outter);
-                GameWindowGrid.Children.Add(i);
 
-                for (inner = 0; inner < row_count; inner++)
+
+
+            for (int outter = 0; outter < row_count-1; outter++){
+
+                
+                for (inner = 0; inner < col_count; inner++)
                 {
-                     i = new Image();
-                     src = new BitmapImage();
+                    i = new Image();
+                    src = new BitmapImage();
                     src.BeginInit();
-                    src.UriSource = new Uri(go.url, UriKind.Relative);
+                    src.UriSource = new Uri(gameObjects[imageIndex].url, UriKind.Relative);
                     src.CacheOption = BitmapCacheOption.OnLoad;
                     src.EndInit();
                     i.Source = src;
@@ -108,8 +108,25 @@ namespace GreenICT
                     Grid.SetRow(i, inner);
                     Grid.SetColumn(i, outter);
                     GameWindowGrid.Children.Add(i);
+                    imageIndex++;
                 }
+
+                i = new Image();
+                src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri(gameObjects[imageIndex].url, UriKind.Relative);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+                src.EndInit();
+                i.Source = src;
+                i.Stretch = Stretch.Uniform;
+
+                Grid.SetRow(i, inner);
+                Grid.SetColumn(i, outter);
+                GameWindowGrid.Children.Add(i);
+                imageIndex++;
+
             }
+            int x = imageIndex;
 
 
         }
