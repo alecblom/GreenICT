@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GreenICT
 {
-    class GameObject
+    public class GameObject
     {
         private int id;
         private string name;
@@ -32,6 +32,11 @@ namespace GreenICT
             this.description = description;
 
             id = DatabaseHandler.CreateNewGameObject(name, type, url, description);
+        }
+
+        public int getId()
+        {
+            return this.id;
         }
     }
 }

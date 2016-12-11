@@ -11,6 +11,7 @@ namespace GreenICT
 {
     class DatabaseHandler
     {
+        #region GAMEOBJECTS 
 
         static public List<int> getGameList()
         {
@@ -68,42 +69,6 @@ namespace GreenICT
             return data;
         }
 
-        static public Game initGame(Game g)
-        {
-            List<int> objectids = new List<int>();
-            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
-            {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
-                // Perform database operations
-
-                MySqlCommand cmd = new MySqlCommand("SELECT gameobject_gameObjectId FROM gameobject_has_game WHERE game_gameId = " + g.id, conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
-                
-                while (reader.Read())
-                {
-                    objectids.Add((int)reader["gameobject_gameObjectId"]);
-                }
-                foreach (int objectId in objectids)
-                {
-                    GameObject go = new GameObject(objectId);
-                    g.gameObjects.Add(go);
-                }
-                reader.Close();
-                cmd = new MySqlCommand("SELECT state FROM game WHERE gameId = " + g.id, conn);
-                g.state = cmd.ExecuteScalar().ToString();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            conn.Close();
-            Console.WriteLine("Done.");
-            return g;
-        }
-
         static public int CreateNewGameObject(string name, string type, string url, string description)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
@@ -141,5 +106,123 @@ namespace GreenICT
             Console.WriteLine("Done.");
             return 1;
         }
+
+
+        static public List<GameObject> getGameObjects()
+        {
+            List<GameObject> data = new List<GameObject>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT* FROM gameObject", conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data.Add(new GameObject(reader.GetInt32("gameObjectId")));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return data;
+        }
+
+        #endregion
+
+        #region GAMES
+
+        static public Game initGame(Game g)
+        {
+            List<int> objectids = new List<int>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT gameobject_gameObjectId FROM gameobject_has_game WHERE game_gameId = " + g.id, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+                
+                while (reader.Read())
+                {
+                    objectids.Add((int)reader["gameobject_gameObjectId"]);
+                }
+                foreach (int objectId in objectids)
+                {
+                    GameObject go = new GameObject(objectId);
+                    g.gameObjects.Add(go);
+                }
+                reader.Close();
+                cmd = new MySqlCommand("SELECT state FROM game WHERE gameId = " + g.id, conn);
+                g.state = cmd.ExecuteScalar().ToString();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return g;
+        }
+
+        static public int createGame()
+        {
+            int objID = 0;
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO game(state) VALUES(\"started\")", conn);
+                cmd1.ExecuteNonQuery();
+                objID = (int)cmd1.LastInsertedId;
+                
+                
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return objID;
+        }
+        static public int bindGame_GameObj(int gameId,int gameObjId)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId) VALUES("+gameObjId+","+gameId+")", conn);
+                cmd1.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return 1;
+        }
+        #endregion
+
+
     }
 }
