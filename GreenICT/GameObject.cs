@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GreenICT
 {
-    class GameObject
+    public class GameObject
     {
         private int id;
         private string name;

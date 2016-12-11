@@ -13,7 +13,7 @@ namespace GreenICT.Controller
         /**
         Create a new game and save it in the curGame variable
         */
-        public void init_game(int gameObj_amount) //gameobjamount - 20/24/30
+        public Game init_game(int gameObj_amount) //gameobjamount - 20/24/30
         {
 
             //Get all game objects
@@ -25,7 +25,7 @@ namespace GreenICT.Controller
             if ((gameObj_amount / 2) > ret.Count)
             {
                 Console.WriteLine("Not enough game objects to create this game !");
-                return;
+                return null;
             }
             else
             {
@@ -58,7 +58,7 @@ namespace GreenICT.Controller
             shuffle(finalgameObjects);
 
             //Save all this to a game object
-            curGame = new Game(newGameId, finalgameObjects);
+            return new Game(newGameId, finalgameObjects,gameObj_amount);
         }
 
 

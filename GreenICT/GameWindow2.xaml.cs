@@ -26,13 +26,12 @@ namespace GreenICT
         //
     public partial class GameWindow2 : Window
     {
-        public GameWindow2()
+        public GameWindow2(Game game)
         {
-            int gameSizeRequested = 20;
+           
             InitializeComponent();
             GameController g = new GameController();
-            g.init_game(gameSizeRequested);
-            Game game = g.getCurrentGame();
+            int gameSizeRequested = game.getSize();
             gen_grid(gameSizeRequested, game);
 
         }
@@ -48,8 +47,8 @@ namespace GreenICT
                     row_count = 5;
                     break;
                 case 24:
-                    col_count = 4;
-                    row_count = 6;
+                    col_count = 6;
+                    row_count = 4;
                     break;
                 case 30:
                     col_count = 5;
@@ -87,13 +86,15 @@ namespace GreenICT
             Image i;
             BitmapImage src;
             List<GameObject> gameObjects = game.getGameObjects();
+            int x = 0;
+            int y = 0;
 
 
 
+            for (int outter = 0; outter < row_count - 1; outter++)
+            {
 
-            for (int outter = 0; outter < row_count-1; outter++){
 
-                
                 for (inner = 0; inner < col_count; inner++)
                 {
                     i = new Image();
@@ -126,7 +127,7 @@ namespace GreenICT
                 imageIndex++;
 
             }
-            int x = imageIndex;
+
 
 
         }

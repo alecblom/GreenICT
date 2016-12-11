@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace GreenICT
 {
-    class Game
+    public class Game
     {
         private int id;
         private List<GameObject> gameObjects;
-
+        private int size;
 
         //Get game by id from database and init it 
         public Game(int id)
@@ -24,10 +24,11 @@ namespace GreenICT
             }
         }
 
-        public Game(int id, List<GameObject> gameObjects)
+        public Game(int id, List<GameObject> gameObjects, int size)
         {
             this.id = id;
             this.gameObjects = gameObjects;
+            this.size = size;
         }
 
         public List<GameObject> getGameObjects()
@@ -38,7 +39,10 @@ namespace GreenICT
         {
             return id;
         }
-
+        public int getSize()
+        {
+            return size;
+        }
 
     }
 }
