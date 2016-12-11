@@ -55,6 +55,7 @@ namespace GreenICT
                 Button btn = new Button();
                 btn.Content = "Select game";
                 btn.Tag = g.id;
+                btn.Click += createGame;
                 Grid.SetRow(btn, y);
                 Grid.SetColumn(btn, 3);
                 y++;
@@ -63,6 +64,11 @@ namespace GreenICT
                 games_list.Children.Add(state);
                 games_list.Children.Add(btn);
             }
+        }
+
+        private void createGame(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
