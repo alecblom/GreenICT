@@ -28,12 +28,10 @@ namespace GreenICT
     {
         public GameWindow2(Game game)
         {
-           
             InitializeComponent();
             GameController g = new GameController();
             int gameSizeRequested = game.getSize();
             gen_grid(gameSizeRequested, game);
-
         }
 
         private void gen_grid(int size, Game game)

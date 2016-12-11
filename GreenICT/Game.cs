@@ -8,20 +8,20 @@ namespace GreenICT
 {
     public class Game
     {
-        private int id;
-        private List<GameObject> gameObjects;
+        public int id { get; set; }
+        public List<GameObject> gameObjects { get; set; }
+        public string state { get; set; }
         private int size;
 
         //Get game by id from database and init it 
         public Game(int id)
         {
+            gameObjects = new List<GameObject>();
             this.id = id;
-            List<int> data = DatabaseHandler.initGame(id);
-            foreach (int objectId in data)
-            {
-                GameObject go = new GameObject(objectId);
-                gameObjects.Add(go);
-            }
+
+            Game g = DatabaseHandler.initGame(this);
+            this.gameObjects = g.gameObjects;
+            this.state = g.state;
         }
 
         public Game(int id, List<GameObject> gameObjects, int size)
