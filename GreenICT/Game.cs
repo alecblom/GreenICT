@@ -11,6 +11,7 @@ namespace GreenICT
         public int id { get; set; }
         public List<GameObject> gameObjects { get; set; }
         public string state { get; set; }
+
         public Game(int id)
         {
             gameObjects = new List<GameObject>();
@@ -18,11 +19,6 @@ namespace GreenICT
             Game g = DatabaseHandler.initGame(this);
             this.gameObjects = g.gameObjects;
             this.state = g.state;
-            foreach(int objectId in data[0])
-            {
-                GameObject go = new GameObject(objectId);
-                gameObjects.Add(go);
-            }
         }
 
     }

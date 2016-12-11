@@ -37,24 +37,30 @@ namespace GreenICT
                 games.Add(g);
             }
 
-            int x = 0;
             int y = 0;
             foreach (Game g in games)
             {   
                 games_list.RowDefinitions.Add(new RowDefinition());
+
                 Label gameid = new Label();
                 gameid.Content = g.id;
+                Grid.SetRow(gameid, y);
+                Grid.SetColumn(gameid, 0);
 
                 Label state = new Label();
                 state.Content = g.state;
+                Grid.SetRow(state, y);
+                Grid.SetColumn(state, 1);
+
                 Button btn = new Button();
-                Grid.SetRow(gameid, y);
-                Grid.SetColumn(gameid, 0);
+                btn.Content = "Select game";
+                btn.Tag = g.id;
                 Grid.SetRow(btn, y);
                 Grid.SetColumn(btn, 3);
                 y++;
 
                 games_list.Children.Add(gameid);
+                games_list.Children.Add(state);
                 games_list.Children.Add(btn);
             }
         }

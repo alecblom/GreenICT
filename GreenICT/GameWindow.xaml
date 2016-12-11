@@ -33,7 +33,6 @@
         	x:Name="games_list" 
         	Margin="25,4" 
         	RenderTransformOrigin="0.5,2.154"
-        	Height="600"
         	Background="{StaticResource BackGroundColour}">
 
                 <Grid.RowDefinitions>

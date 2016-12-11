@@ -91,7 +91,8 @@ namespace GreenICT
                     GameObject go = new GameObject(objectId);
                     g.gameObjects.Add(go);
                 }
-                cmd = new MySqlCommand("SELECT state FROM game WHERE game_gameId = " + g.id, conn);
+                reader.Close();
+                cmd = new MySqlCommand("SELECT state FROM game WHERE gameId = " + g.id, conn);
                 g.state = cmd.ExecuteScalar().ToString();
             }
             catch (Exception ex)
