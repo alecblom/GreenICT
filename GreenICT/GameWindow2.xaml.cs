@@ -22,7 +22,7 @@ namespace GreenICT
         public GameWindow2()
         {
             InitializeComponent();
-           gen_grid(30); //input grid size 20/24/30
+            gen_grid(30); //input grid size 20/24/30
             
         }
 

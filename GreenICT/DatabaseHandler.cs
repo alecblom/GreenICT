@@ -12,6 +12,34 @@ namespace GreenICT
     class DatabaseHandler
     {
 
+        static public List<int> getGameList()
+        {
+            List<int> data = new List<int>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT gameId FROM game", conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data.Add((int)reader["gameId"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return data;
+        }
+
         static public List<string> initGameObject(int id)
         {
             List<string> data = new List<string>();
@@ -40,9 +68,9 @@ namespace GreenICT
             return data;
         }
 
-        static public List<int> initGame(int id)
+        static public Game initGame(Game g)
         {
-            List<int> data = new List<int>();
+            List<int> objectids = new List<int>();
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);
             try
@@ -51,13 +79,20 @@ namespace GreenICT
                 conn.Open();
                 // Perform database operations
 
-                MySqlCommand cmd = new MySqlCommand("SELECT gameobject_gameObjectId FROM gameobject_has_game WHERE game_gameId = " + id, conn);
+                MySqlCommand cmd = new MySqlCommand("SELECT gameobject_gameObjectId FROM gameobject_has_game WHERE game_gameId = " + g.id, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
-
+                
                 while (reader.Read())
                 {
-                    data.Add((int)reader["gameobject_gameObjectId"]);
+                    objectids.Add((int)reader["gameobject_gameObjectId"]);
                 }
+                foreach (int objectId in objectids)
+                {
+                    GameObject go = new GameObject(objectId);
+                    g.gameObjects.Add(go);
+                }
+                cmd = new MySqlCommand("SELECT state FROM game WHERE game_gameId = " + g.id, conn);
+                g.state = cmd.ExecuteScalar().ToString();
             }
             catch (Exception ex)
             {
@@ -65,7 +100,7 @@ namespace GreenICT
             }
             conn.Close();
             Console.WriteLine("Done.");
-            return data;
+            return g;
         }
 
         static public int CreateNewGameObject(string name, string type, string url, string description)
