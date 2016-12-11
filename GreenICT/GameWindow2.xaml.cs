@@ -26,6 +26,8 @@ namespace GreenICT
         //
     public partial class GameWindow2 : Window
     {
+        private String selectedObject;
+        private String selectedObject2;
         public GameWindow2(Game game)
         {
             InitializeComponent();
@@ -83,6 +85,7 @@ namespace GreenICT
             int imageIndex = 0;
             Image i;
             BitmapImage src;
+            Button b;
             List<GameObject> gameObjects = game.getGameObjects();
             int x = 0;
             int y = 0;
@@ -95,6 +98,8 @@ namespace GreenICT
 
                 for (inner = 0; inner < col_count; inner++)
                 {
+
+
                     i = new Image();
                     src = new BitmapImage();
                     src.BeginInit();
@@ -103,10 +108,13 @@ namespace GreenICT
                     src.EndInit();
                     i.Source = src;
                     i.Stretch = Stretch.Uniform;
-
+                    String name = gameObjects[imageIndex].getId().ToString();
+                    i.Name = "o_" + name;
+                  
                     Grid.SetRow(i, inner);
                     Grid.SetColumn(i, outter);
                     GameWindowGrid.Children.Add(i);
+
                     imageIndex++;
                 }
 
@@ -121,6 +129,8 @@ namespace GreenICT
 
                 Grid.SetRow(i, inner);
                 Grid.SetColumn(i, outter);
+                String name2 = gameObjects[imageIndex].getId().ToString();
+                i.Name = "o_"+name2;
                 GameWindowGrid.Children.Add(i);
                 imageIndex++;
 
@@ -132,7 +142,44 @@ namespace GreenICT
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (selectedObject != null && selectedObject2 != null)
+            {
+                if(selectedObject2 == selectedObject)
+                {
+                    Console.WriteLine("match found");
+                }
+                else
+                {
+                    Console.WriteLine("No match!");
+                }
+                selectedObject = null;
+                selectedObject2 = null;
+            }
+        }
 
+        private void GameWindowGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            
+            Image dep;
+            try
+            {
+                dep = (Image)e.OriginalSource;
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            if (selectedObject == null)
+            {
+                selectedObject = dep.Name;
+                return;
+            }else
+            {
+                if (selectedObject2 == null)
+                {
+                    selectedObject2 = dep.Name;
+                }
+            }
         }
     }
 }

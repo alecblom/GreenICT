@@ -11,22 +11,9 @@
     <StackPanel
         Orientation="Horizontal">
         <Grid x:Name="GameWindowGrid" Margin="20" Width="1300" Height="800"
-              Background="{StaticResource secondaryLight}">
-            <Border Grid.Column="0" Grid.RowSpan="5" BorderBrush="Black" 
-        BorderThickness="1" />
-            <Border Grid.Column="1" Grid.RowSpan="5" BorderBrush="Black" 
-        BorderThickness="1" />
-            <Border Grid.Column="2" Grid.RowSpan="5" BorderBrush="Black" 
-        BorderThickness="1" />
-            <Border Grid.Column="3" Grid.RowSpan="5" BorderBrush="Black" 
-        BorderThickness="1" />
-            <Border Grid.Column="4" Grid.RowSpan="5" BorderBrush="Black" 
-        BorderThickness="1" />
-            <Border Grid.Row="0" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1"/>
-            <Border Grid.Row="2" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1"/>
-            <Border Grid.Row="3" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1"/>
-            <Border Grid.Row="4" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1"/>
-            <Border Grid.Row="1" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="1"/>
+              Background="{StaticResource secondaryLight}"
+              MouseLeftButtonUp="GameWindowGrid_MouseLeftButtonUp">
+            
         </Grid>
         <Button Height="150" Width="150" VerticalAlignment="Top"  Margin="-12.5,35,0,0" Click="Button_Click">
             <Image Source="C://appImages/flip.png"/>
