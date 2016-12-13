@@ -224,5 +224,31 @@ namespace GreenICT
         #endregion
 
 
+
+        public static void InsertGameEvent(String actionElement, String actionPerformed, int playerID, int gameID)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                //TODO fix timestamp with valid sql date?
+                //Check why id isnt loading
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                DateTime myDateTime = DateTime.Now;
+                string sqlFormattedDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameevent(actionElement,actionPerformed,timestamp,Player_playerId,Game_gameId) VALUES(\"" + actionElement + "\",\"" + actionPerformed + "\",\"" + sqlFormattedDate + "\"," + playerID + "," + gameID+")", conn);
+                cmd1.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+           
+        }
+
     }
 }

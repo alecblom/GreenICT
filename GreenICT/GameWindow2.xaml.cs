@@ -29,6 +29,7 @@ namespace GreenICT
         private int score;
         private int size;
         private int moves;
+        private int curGameID;
         public GameWindow2(Game game)
         {
             InitializeComponent();
@@ -37,6 +38,7 @@ namespace GreenICT
             gen_grid(size, game);
             score = 0;
             moves = 0;
+            curGameID = game.id;
             updateScore();
             updateMoves();
             //Initialize succes icon for when images are matched
@@ -180,8 +182,6 @@ namespace GreenICT
                     match = true;
                     updateInfoText(3);
                     continue_button.Visibility = Visibility.Visible;
-                    score++;
-                    updateScore();
                 }
                 else
                 {
@@ -272,22 +272,28 @@ namespace GreenICT
 
            
             continue_button.Visibility = Visibility.Hidden;
-            updateInfoText(1);
+
             if (match)
             {
                 selectedObject.Source = success_icon;
                 selectedObject2.Source = success_icon;
+                
+                score++;
+                updateScore();
+                String name = selectedObject.Name;
+                name = name.Substring(2);
+                //int x = Int32.Parse(name);
+                DatabaseHandler.InsertGameEvent(name, "matched", 1, curGameID);
                 selectedObject.Name = "s";
                 selectedObject2.Name = "s";
-
-            
             }
             else
             {
+                //DatabaseHandler.InsertGameEvent(name, "matched", 1, curGameID);
                 selectedObject.Opacity = 0;
                 selectedObject2.Opacity = 0;
             }
-
+            updateInfoText(1);
             selectedObject = null;
             selectedObject2 = null;
         }
