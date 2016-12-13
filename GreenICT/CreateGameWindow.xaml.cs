@@ -33,13 +33,13 @@ namespace GreenICT
             {
                 if ((bool)radioButton_20.IsChecked)
                 {
-                    GameWindow2 win2 = new GameWindow2(gc.init_game(20));
+                    GameWindow win2 = new GameWindow(gc.init_game(20));
                     win2.Show();
                     this.Close();
                     return;
                 }else if ((bool)radioButton_30.IsChecked)
                 {
-                    GameWindow2 win2 = new GameWindow2(gc.init_game(30));
+                    GameWindow win2 = new GameWindow(gc.init_game(30));
                     win2.Show();
                     this.Close();
                     return;
