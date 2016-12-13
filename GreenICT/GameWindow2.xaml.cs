@@ -15,25 +15,36 @@ using System.Windows.Shapes;
 
 namespace GreenICT
 {
-    /// <summary>
-    /// Interaction logic for GameWindow2.xaml
-    /// </summary>
-    /// 
+   //TODO remove logic place in seperate class and pass window references by paassing .this to the other class (all elements should be accesable ) 
+   //Log all moves to database
 
 
-        //implement lowest amount of pictures in database to creae 20 sized game
-        //call gen grid using results from init game 
-        //
     public partial class GameWindow2 : Window
     {
-        private String selectedObject;
-        private String selectedObject2;
+       
+        private Image selectedObject;
+        private Image selectedObject2;
+        private bool match;
+        private BitmapImage success_icon;
+        private int score;
+        private int size;
+        private int moves;
         public GameWindow2(Game game)
         {
             InitializeComponent();
             GameController g = new GameController();
-            int gameSizeRequested = game.getSize();
-            gen_grid(gameSizeRequested, game);
+           size = game.getSize();
+            gen_grid(size, game);
+            score = 0;
+            moves = 0;
+            updateScore();
+            updateMoves();
+            //Initialize succes icon for when images are matched
+            success_icon = new BitmapImage();
+            success_icon.BeginInit();
+            success_icon.UriSource = new Uri("C:\\AppImages\\success_icon.png", UriKind.Relative);
+            success_icon.CacheOption = BitmapCacheOption.OnLoad;
+            success_icon.EndInit();
         }
 
         private void gen_grid(int size, Game game)
@@ -45,10 +56,6 @@ namespace GreenICT
                 case 20:
                     col_count = 4;
                     row_count = 5;
-                    break;
-                case 24:
-                    col_count = 6;
-                    row_count = 4;
                     break;
                 case 30:
                     col_count = 5;
@@ -110,9 +117,17 @@ namespace GreenICT
                     i.Stretch = Stretch.Uniform;
                     String name = gameObjects[imageIndex].getId().ToString();
                     i.Name = "o_" + name;
-                  
+                    i.Opacity = 0.0;
+
+                    var myBorder = new Border();
+                    myBorder.BorderBrush = Brushes.Black;
+                    myBorder.BorderThickness = new Thickness(1);
+                    myBorder.Background = Brushes.MediumPurple;
+                    Grid.SetRow(myBorder, inner);
+                    Grid.SetColumn(myBorder, outter);
                     Grid.SetRow(i, inner);
                     Grid.SetColumn(i, outter);
+                    GameWindowGrid.Children.Add(myBorder);
                     GameWindowGrid.Children.Add(i);
 
                     imageIndex++;
@@ -121,17 +136,31 @@ namespace GreenICT
                 i = new Image();
                 src = new BitmapImage();
                 src.BeginInit();
+                if(imageIndex == 24)
+                {
+                    break;
+                }
                 src.UriSource = new Uri(gameObjects[imageIndex].url, UriKind.Relative);
                 src.CacheOption = BitmapCacheOption.OnLoad;
                 src.EndInit();
                 i.Source = src;
                 i.Stretch = Stretch.Uniform;
+                String name2 = gameObjects[imageIndex].getId().ToString();
+                i.Name = "o_" + name2;
+                i.Opacity = 0.0;
 
+                var myBorder2 = new Border();
+                myBorder2.BorderBrush = Brushes.Black;
+                myBorder2.BorderThickness = new Thickness(1);
+                myBorder2.Background = Brushes.MediumPurple;
+                Grid.SetRow(myBorder2, inner);
+                Grid.SetColumn(myBorder2, outter);
                 Grid.SetRow(i, inner);
                 Grid.SetColumn(i, outter);
-                String name2 = gameObjects[imageIndex].getId().ToString();
-                i.Name = "o_"+name2;
+                GameWindowGrid.Children.Add(myBorder2);
                 GameWindowGrid.Children.Add(i);
+
+               
                 imageIndex++;
 
             }
@@ -140,26 +169,35 @@ namespace GreenICT
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+    
+
+        public void checkMatch()
         {
-            if (selectedObject != null && selectedObject2 != null)
-            {
-                if(selectedObject2 == selectedObject)
+           
+                if (selectedObject2.Name == selectedObject.Name)
                 {
                     Console.WriteLine("match found");
+                    match = true;
+                    updateInfoText(3);
+                    continue_button.Visibility = Visibility.Visible;
+                    score++;
+                    updateScore();
                 }
                 else
                 {
                     Console.WriteLine("No match!");
+                    updateInfoText(4);
+                    continue_button.Visibility = Visibility.Visible;
+                    match = false;
                 }
-                selectedObject = null;
-                selectedObject2 = null;
-            }
+            moves++;
+            updateMoves();
         }
 
+        //TODO: check if image clicked is success_icon
         private void GameWindowGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            
+
             Image dep;
             try
             {
@@ -169,17 +207,89 @@ namespace GreenICT
             {
                 return;
             }
+            if (dep.Name == "s")
+            {
+                return;
+            }
             if (selectedObject == null)
             {
-                selectedObject = dep.Name;
+                updateInfoText(2);
+                dep.Opacity = 10.0;
+                selectedObject = dep;
                 return;
-            }else
-            {
-                if (selectedObject2 == null)
-                {
-                    selectedObject2 = dep.Name;
-                }
             }
+            else if (selectedObject2 == null)
+            {
+                if (dep == selectedObject) return;
+                dep.Opacity = 10.0;
+                selectedObject2 = dep;
+                checkMatch();
+            }
+          
+        }
+
+        private void updateInfoText(int i)
+        {
+           
+           switch (i){
+                case 1:
+                    info_text.Text = "Select an image to reveal it.";
+                    break;
+                case 2:
+                    info_text.Text = "Select a second image to reveal it.";
+                    break;
+                case 3:
+                    info_text.Text = "Images matched !";
+                    break;
+                case 4:
+                    info_text.Text = "No match!";
+                    break;
+                }
+        }
+
+        private void updateScore()
+        {
+            if(score == size/2)
+            {
+                score_text.Text = "Game finished !";
+
+            }
+            else
+            {
+                score_text.Text = "Score : " + score;
+            }
+            
+        }
+
+        private void updateMoves()
+        {
+            move_text.Text = "Moves : " + moves;
+        }
+
+        
+        private void button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+           
+            continue_button.Visibility = Visibility.Hidden;
+            updateInfoText(1);
+            if (match)
+            {
+                selectedObject.Source = success_icon;
+                selectedObject2.Source = success_icon;
+                selectedObject.Name = "s";
+                selectedObject2.Name = "s";
+
+            
+            }
+            else
+            {
+                selectedObject.Opacity = 0;
+                selectedObject2.Opacity = 0;
+            }
+
+            selectedObject = null;
+            selectedObject2 = null;
         }
     }
 }
