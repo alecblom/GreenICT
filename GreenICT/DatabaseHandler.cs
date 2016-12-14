@@ -201,6 +201,10 @@ namespace GreenICT
             Console.WriteLine("Done.");
             return objID;
         }
+
+        //TODO , take parameters to set x,y and state.
+        //Rights now, state is always unflipped since this method is used for binding the gameobeject to the game for the first time
+        //Updating will be done somwhere else
         static public int bindGame_GameObj(int gameId,int gameObjId)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
@@ -210,7 +214,7 @@ namespace GreenICT
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations
-                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId) VALUES("+gameObjId+","+gameId+")", conn);
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId,x,y,state) VALUES("+gameObjId+","+gameId+",1,1,\"unmatched\")", conn);
                 cmd1.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -224,7 +228,7 @@ namespace GreenICT
         #endregion
 
 
-
+        
         public static void InsertGameEvent(String actionElement, String actionPerformed, int playerID, int gameID)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
