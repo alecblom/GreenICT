@@ -14,16 +14,16 @@ namespace GreenICT
     {
         public GameWindow gameWindow;
         private int size;
-      
+        private Game curGame;
         public BoardController(GameWindow gameWindow)
         {
             this.gameWindow = gameWindow;
-           
         }
 
         //Generate the game grid in required size
         public void gen_grid(Game game)
         {
+            this.curGame = game;
             size = game.getSize();
             int col_count;
             int row_count;
@@ -55,12 +55,12 @@ namespace GreenICT
                 gameWindow.GameWindowGrid.RowDefinitions.Add(row);
             }
 
-            fillGrid(col_count, row_count, game);
+            fillGrid(col_count, row_count);
 
         }
 
         //Fill the grid with random collection of gameobjects
-        public void fillGrid(int cc, int rc, Game game)
+        public void fillGrid(int cc, int rc)
         {
             int col_count = cc;
             int row_count = rc;
@@ -68,7 +68,7 @@ namespace GreenICT
             int imageIndex = 0;
             Image i;
             BitmapImage src;
-            List<GameObject> gameObjects = game.getGameObjects();
+            List<GameObject> gameObjects = curGame.getGameObjects();
            
 
 
@@ -141,6 +141,13 @@ namespace GreenICT
                 gameWindow.match = true;
                 updateInfoText(3);
                 gameWindow.continue_button.Visibility = Visibility.Visible;
+               
+                //Get id of the gameobject and log the change to DB
+                String id = gameWindow.selectedObject.Name;
+                id = id.Substring(2);
+                int x = Int32.Parse(id);
+                DatabaseHandler.updateGameObj_has_game(x, curGame.id, 1);
+
             }
             else
             {
@@ -182,6 +189,9 @@ namespace GreenICT
             if (gameWindow.score == size / 2)
             {
                 gameWindow.score_text.Text = "Game finished !";
+                DatabaseHandler.updateGameState("Finished",curGame.id);
+                DatabaseHandler.InsertGameEvent("game_" + curGame.id, "finished", 1, curGame.id);
+                gameWindow.info_text.Visibility = Visibility.Hidden;
             }
             else
             {

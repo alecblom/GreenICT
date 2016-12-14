@@ -13,9 +13,11 @@ namespace GreenICT
     {
         #region GAMEOBJECTS 
 
-        static public List<int> getGameList()
+        //TODO , take parameters to set x,y and state.
+        //Rights now, state is always unflipped since this method is used for binding the gameobeject to the game for the first time
+        //Updating will be done somwhere else
+        static public void bindGame_GameObj(int gameId, int gameObjId)
         {
-            List<int> data = new List<int>();
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);
             try
@@ -23,14 +25,8 @@ namespace GreenICT
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations
-
-                MySqlCommand cmd = new MySqlCommand("SELECT gameId FROM game", conn);
-                MySqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    data.Add((int)reader["gameId"]);
-                }
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId,x,y,state) VALUES(" + gameObjId + "," + gameId + ",1,1,0)", conn);
+                cmd1.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -38,8 +34,31 @@ namespace GreenICT
             }
             conn.Close();
             Console.WriteLine("Done.");
-            return data;
         }
+
+        public static void updateGameObj_has_game(int gameObjId, int gameId, int state)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd1 = new MySqlCommand("UPDATE gameobject_has_game SET state=" + state + " WHERE game_gameId=" + gameId + " AND gameobject_gameObjectId=" + gameObjId + ";", conn);
+                cmd1.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+
+        }
+
+
+
 
         static public List<string> initGameObject(int id)
         {
@@ -136,9 +155,66 @@ namespace GreenICT
             return data;
         }
 
+        static public List<GameObject> getRandomGameObjects(int amount)
+        {
+            List<GameObject> data = new List<GameObject>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT* FROM gameObject ORDER BY RAND() LIMIT "+amount+";", conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data.Add(new GameObject(reader.GetInt32("gameObjectId")));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return data;
+        }
+
         #endregion
 
         #region GAMES
+
+
+        static public List<int> getGameList()
+        {
+            List<int> data = new List<int>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT gameId FROM game", conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data.Add((int)reader["gameId"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return data;
+        }
 
         static public Game initGame(Game g)
         {
@@ -201,7 +277,10 @@ namespace GreenICT
             Console.WriteLine("Done.");
             return objID;
         }
-        static public int bindGame_GameObj(int gameId,int gameObjId)
+
+     
+
+        public static void updateGameState(String state, int gameID)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -210,7 +289,7 @@ namespace GreenICT
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations
-                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId) VALUES("+gameObjId+","+gameId+")", conn);
+                MySqlCommand cmd1 = new MySqlCommand("UPDATE game SET state=\""+state+"\" WHERE gameId="+gameID+";", conn);
                 cmd1.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -219,9 +298,13 @@ namespace GreenICT
             }
             conn.Close();
             Console.WriteLine("Done.");
-            return 1;
+            
         }
+
+
         #endregion
+
+      
 
 
 
@@ -231,8 +314,6 @@ namespace GreenICT
             MySqlConnection conn = new MySqlConnection(connStr);
             try
             {
-                //TODO fix timestamp with valid sql date?
-                //Check why id isnt loading
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations
