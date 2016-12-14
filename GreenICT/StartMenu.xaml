@@ -1,0 +1,29 @@
+﻿<Window x:Class="GreenICT.StartMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GreenICT"
+        mc:Ignorable="d"
+        Title="StartMenu" Height="300" Width="300" Background="{StaticResource primaryLight}"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="0" Grid.Column="1" Source="./assets/memory.png" />
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+            <Button Height="20" Width="85" Margin="5" Click="Button_Play">New Game</Button>
+            <Button Height="20" Width="85" Click="Button_Resume">Resume Game</Button>
+        </StackPanel>
+
+        <Button Grid.Row="2" Grid.Column="1" Height="20" Width="130" Click="Button_New_Game_Object">Add Game Object</Button>
+    </Grid>
+</Window>

@@ -21,6 +21,18 @@
             <TextBlock x:Name="score_text" HorizontalAlignment="Right" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Canvas.Left="1227" Canvas.Top="32" RenderTransformOrigin="0.306,-0.182" />
             <TextBlock x:Name="move_text" HorizontalAlignment="Right" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Canvas.Left="1227" Canvas.Top="75" />
         </Canvas>
+        <Button 
+        	x:Name="button" 
+        	Content="Exit Game" 
+        	Margin="0,25,25,0" Width="300" 
+        	HorizontalAlignment="Right" 
+        	Height="40" 
+        	FontSize="20"
+        	FontWeight="Bold"
+        	Background="{StaticResource secondaryLight}"
+        	Foreground="{StaticResource ResourceKey=secondaryDark}"
+            Click="click_back"
+            />
 
     </StackPanel>
 

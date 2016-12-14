@@ -41,10 +41,10 @@ namespace GreenICT.Controller
             shuffle(finalgameObjects);
 
             //Save a game event stating we created this new game
-            DatabaseHandler.InsertGameEvent("game_" + newGameId, "started", 1, newGameId);
+            DatabaseHandler.InsertGameEvent("game_" + newGameId, "setup", 1, newGameId);
 
             //Save all this to a game object
-            return new Game(newGameId, finalgameObjects,gameObj_amount);
+            return new Game(newGameId, finalgameObjects,gameObj_amount, "setup");
         }
 
 

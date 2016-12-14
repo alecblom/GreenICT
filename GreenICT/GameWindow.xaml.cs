@@ -27,6 +27,7 @@ namespace GreenICT
         public int score;
         public int moves;
         private int curGameID;
+        private Game game;
         public BoardController b;
         public GameWindow(Game game)
         {
@@ -40,6 +41,7 @@ namespace GreenICT
             score = 0;
             moves = 0;
             curGameID = game.id;
+            this.game = game;
             b.updateScore();
             b.updateMoves();
             
@@ -96,7 +98,7 @@ namespace GreenICT
         private void button_Click_1(object sender, RoutedEventArgs e)
         {
             continue_button.Visibility = Visibility.Hidden; //Hide continue button
-
+            DatabaseHandler.SetGameMoves(game.id, moves);
             if (match)
             {
                 //Replace images with success icon
@@ -114,6 +116,7 @@ namespace GreenICT
 
                 //Add score
                 score++;
+                DatabaseHandler.SetGameScore(game.id, score);
                 b.updateScore();
             }
             else
@@ -134,6 +137,18 @@ namespace GreenICT
             b.updateInfoText(1);
             selectedObject = null;
             selectedObject2 = null;
+        }
+
+        public Game GetGame()
+        {
+            return this.game;
+        }
+
+        private void click_back(object sender, RoutedEventArgs e)
+        {
+            GameSelect window = new GameSelect();
+            window.Show();
+            this.Close();
         }
     }
 }
