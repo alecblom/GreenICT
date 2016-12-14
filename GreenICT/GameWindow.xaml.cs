@@ -15,13 +15,11 @@ using System.Windows.Shapes;
 
 namespace GreenICT
 {
-   //TODO remove logic place in seperate class and pass window references by paassing .this to the other class (all elements should be accesable ) 
-   //Log all moves to database
-
-
+ 
     public partial class GameWindow : Window
     {
-       
+       //TODO update game state upon winning
+
         public Image selectedObject;
         public Image selectedObject2;
         public bool match;
