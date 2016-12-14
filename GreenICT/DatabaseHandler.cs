@@ -202,28 +202,7 @@ namespace GreenICT
             return objID;
         }
 
-        //TODO , take parameters to set x,y and state.
-        //Rights now, state is always unflipped since this method is used for binding the gameobeject to the game for the first time
-        //Updating will be done somwhere else
-        static public void bindGame_GameObj(int gameId,int gameObjId)
-        {
-            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
-            MySqlConnection conn = new MySqlConnection(connStr);
-            try
-            {
-                Console.WriteLine("Connecting to MySQL...");
-                conn.Open();
-                // Perform database operations
-                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId,x,y,state) VALUES("+gameObjId+","+gameId+",1,1,\"unmatched\")", conn);
-                cmd1.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            conn.Close();
-            Console.WriteLine("Done.");
-        }
+     
 
         public static void updateGameState(String state, int gameID)
         {
@@ -245,18 +224,65 @@ namespace GreenICT
             Console.WriteLine("Done.");
             
         }
+
+
+        #endregion
+
+        #region gameObject
+
+        //TODO , take parameters to set x,y and state.
+        //Rights now, state is always unflipped since this method is used for binding the gameobeject to the game for the first time
+        //Updating will be done somwhere else
+        static public void bindGame_GameObj(int gameId, int gameObjId)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO gameobject_has_game(gameobject_gameObjectId,game_gameId,x,y,state) VALUES(" + gameObjId + "," + gameId + ",1,1,0)", conn);
+                cmd1.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+        }
+
+        public static void updateGameObj_has_game(int gameObjId, int gameId, int state)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd1 = new MySqlCommand("UPDATE gameobject_has_game SET state=" + state + " WHERE game_gameId=" + gameId + " AND gameobject_gameObjectId="+gameObjId+";", conn);
+                cmd1.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+
+        }
         #endregion
 
 
-        
+
         public static void InsertGameEvent(String actionElement, String actionPerformed, int playerID, int gameID)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);
             try
             {
-                //TODO fix timestamp with valid sql date?
-                //Check why id isnt loading
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations

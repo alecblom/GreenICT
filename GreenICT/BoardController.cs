@@ -18,7 +18,6 @@ namespace GreenICT
         public BoardController(GameWindow gameWindow)
         {
             this.gameWindow = gameWindow;
-           
         }
 
         //Generate the game grid in required size
@@ -142,6 +141,13 @@ namespace GreenICT
                 gameWindow.match = true;
                 updateInfoText(3);
                 gameWindow.continue_button.Visibility = Visibility.Visible;
+               
+                //Get id of the gameobject and log the change to DB
+                String id = gameWindow.selectedObject.Name;
+                id = id.Substring(2);
+                int x = Int32.Parse(id);
+                DatabaseHandler.updateGameObj_has_game(x, curGame.id, 1);
+
             }
             else
             {
