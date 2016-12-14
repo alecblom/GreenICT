@@ -5,62 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GreenICT"
         mc:Ignorable="d"
-        Background="{StaticResource primaryDark}"
-        Title="GameWindow" Height="825" Width="1200">
-    <StackPanel>
+        Title="Game window" Height="900" Width="1500"
+            Background="{StaticResource primaryLight}"
+        ResizeMode="NoResize">
 
-        <TextBlock 
-        Foreground="{StaticResource secondaryDark}"
-        x:Name="textBlock" 
-        HorizontalAlignment="Left" 
-        Margin="25,22,0,0" 
-        TextWrapping="Wrap" 
-        VerticalAlignment="Top" 
-        Height="66" Width="1274"
-        FontSize="45" RenderTransformOrigin="0.5,0.5">
-            <TextBlock.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="-0.078"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="-0.749"/>
-                </TransformGroup>
-            </TextBlock.RenderTransform><Run FontWeight="Bold" Text="Select a game to play"/></TextBlock>
+    <StackPanel
+        Orientation="Vertical">
+        <Grid x:Name="GameWindowGrid" Margin="22,34,22,0" Width="1448"
+    		Background="{StaticResource secondaryLight}"
+    		MouseLeftButtonUp="GameWindowGrid_MouseLeftButtonUp" Height="692"/>
 
-        <Rectangle Margin="25 0 25 10" HorizontalAlignment="Stretch" Fill="{StaticResource secondaryDark}" Height="4"/>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Grid 
-        	x:Name="games_list" 
-        	Margin="25,4" 
-        	RenderTransformOrigin="0.5,2.154"
-        	Background="{StaticResource BackGroundColour}">
-
-                <Grid.RowDefinitions>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-            </Grid>
-        </ScrollViewer>
-        <Button 
-        	x:Name="button" 
-        	Content="Confirm Selection" 
-        	Margin="0,25,25,0" Width="300" 
-        	HorizontalAlignment="Right" 
-        	Height="40" 
-        	FontSize="20"
-        	FontWeight="Bold"
-        	Background="{StaticResource secondaryLight}"
-        	Foreground="{StaticResource ResourceKey=secondaryDark}"
-            />
-
+        <Canvas>
+            <TextBlock x:Name="info_text" HorizontalAlignment="Left" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Canvas.Left="18" Canvas.Top="59"><Run Text="Select an image to reveal it."/></TextBlock>
+            <Button x:Name="continue_button" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Continue" Width="200"  FontWeight="Bold" FontSize="20" Height="50" Click="button_Click_1" Canvas.Left="676" Canvas.Top="52" />
+            <TextBlock x:Name="score_text" HorizontalAlignment="Right" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Canvas.Left="1227" Canvas.Top="32" RenderTransformOrigin="0.306,-0.182" />
+            <TextBlock x:Name="move_text" HorizontalAlignment="Right" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Canvas.Left="1227" Canvas.Top="75" />
+        </Canvas>
 
     </StackPanel>
-
-
-
 
 </Window>
