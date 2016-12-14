@@ -89,8 +89,6 @@ namespace GreenICT
             int gameId = 0;
             int.TryParse((sender as Button).Tag.ToString(), out gameId);
             GameWindow gameWin = new GameWindow(new Game(gameId));
-            BoardController bc = new BoardController(gameWin);
-            bc.gen_grid(gameWin.GetGame());
             gameWin.Show();
             this.Close();
         }

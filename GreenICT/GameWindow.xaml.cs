@@ -146,7 +146,7 @@ namespace GreenICT
 
         private void click_back(object sender, RoutedEventArgs e)
         {
-            GameSelect window = new GameSelect();
+            StartMenu window = new StartMenu();
             window.Show();
             this.Close();
         }
