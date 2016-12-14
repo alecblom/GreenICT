@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreenICT.Controller;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,102 +12,120 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Diagnostics;
 
 namespace GreenICT
 {
-    /// <summary>
-    /// Interaction logic for GameWindow.xaml
-    /// </summary>
+ 
     public partial class GameWindow : Window
     {
-        List<Image> images;
-        public GameWindow()
+       //TODO update game state upon winning
+
+        public Image selectedObject;
+        public Image selectedObject2;
+        public bool match;
+        private BitmapImage success_icon;
+        public int score;
+        public int moves;
+        private int curGameID;
+        public BoardController b;
+        public GameWindow(Game game)
         {
+            //Init boardcontroller, gamecontroller, and call boardcontrollers gen_grid.
             InitializeComponent();
-            images = new List<Image>();
-            loadImages();
-        }
+            GameController g = new GameController();
+            b = new BoardController(this);
+            b.gen_grid(game);
 
-        private void loadImages()
-        {
-            int x = 0;
-            int y = 0;
-            for (var c = 2; c < 7; c++)
-            {
-                Image i = new Image();
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
-                src.UriSource = new Uri("C:\\AppImages\\harold" + c + ".jpg", UriKind.Relative);
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.EndInit();
-                i.Source = src;
-                i.Width = 300;
-                i.Height = 200;
-                i.Stretch = Stretch.Uniform;
-                Grid.SetRow(i, y);
-                Grid.SetColumn(i, x);
-                x++;
-                if (x > 3)
-                {
-                    x = 0;
-                    y++;
-                }
-
-
-
-                dataGrid.Children.Add(i);
-
-            }
-
-           /* Image i = new Image();
-            BitmapImage src2 = new BitmapImage();
-            src2.BeginInit();
-            src2.UriSource = new Uri("C:\\AppImages\\harold" + 2 + ".jpg", UriKind.Relative);
-            src2.CacheOption = BitmapCacheOption.OnLoad;
-            src2.EndInit();
-            i.Source = src2;
-            i.Width = 300;
-            i.Height = 200;
-            i.Stretch = Stretch.Uniform;
-            Grid.SetRow(i, 0);
-            Grid.SetColumn(i, 1);
-            dataGrid.Children.Add(i);
-            Image i2 = new Image();
-            BitmapImage src3 = new BitmapImage();
-            src3.BeginInit();
-            src3.UriSource = new Uri("C:\\AppImages\\harold" + 3 + ".jpg", UriKind.Relative);
-            src3.CacheOption = BitmapCacheOption.OnLoad;
-            src3.EndInit();
-            i2.Source = src2;
-            i2.Width = 300;
-            i2.Height = 200;
-            i2.Stretch = Stretch.Uniform;
-            Grid.SetRow(i2, 0);
-            Grid.SetColumn(i2, 0);
-            dataGrid.Children.Add(i2);*/
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
+            //Set score, moves and current game id
+            score = 0;
+            moves = 0;
+            curGameID = game.id;
+            b.updateScore();
+            b.updateMoves();
             
+            //Initialize succes icon for when images are matched
+            success_icon = new BitmapImage();
+            success_icon.BeginInit();
+            success_icon.UriSource = new Uri("C:\\AppImages\\success_icon.png", UriKind.Relative);
+            success_icon.CacheOption = BitmapCacheOption.OnLoad;
+            success_icon.EndInit();
+        }
 
+    
+
+
+        private void GameWindowGrid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            //Try to retrieve an image from originalsource
+            Image dep;
+            try
+            {
+                dep = (Image)e.OriginalSource;
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+            //The image is one of the success icons, ignore it
+            if (dep.Name == "s")
+            {
+                return;
+            }
+            //If there is 0 object selected, update the text and save reference
+            //If there is already 1 object selected, fill the 2nd and check for a match
+            if (selectedObject == null)
+            {
+                b.updateInfoText(2);
+                dep.Opacity = 10.0;
+                selectedObject = dep;
+                return;
+            }
+            else if (selectedObject2 == null)
+            {
+                if (dep == selectedObject) return;
+                dep.Opacity = 10.0;
+                selectedObject2 = dep;
+                b.checkMatch();
+            }
           
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
+        
+
+        
+        private void button_Click_1(object sender, RoutedEventArgs e)
         {
+            continue_button.Visibility = Visibility.Hidden; //Hide continue button
 
-        }
+            if (match)
+            {
+                //Replace images with success icon
+                selectedObject.Source = success_icon;
+                selectedObject2.Source = success_icon;
+                
+                //Log to db
+                String name = selectedObject.Name;
+                name = name.Substring(2);
+                DatabaseHandler.InsertGameEvent(name, "matched", 1, curGameID);
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
+                //Update selected object name so it wont count as a gamobject when checking matching images
+                selectedObject.Name = "s";
+                selectedObject2.Name = "s";
 
-        }
-
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-
+                //Add score
+                score++;
+                b.updateScore();
+            }
+            else
+            {
+                //Rehide images
+                selectedObject.Opacity = 0;
+                selectedObject2.Opacity = 0;
+            }
+            //"unselect" objects, show first infotext
+            b.updateInfoText(1);
+            selectedObject = null;
+            selectedObject2 = null;
         }
     }
 }
