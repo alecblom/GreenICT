@@ -95,9 +95,11 @@ namespace GreenICT
             this.Close();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void click_back(object sender, RoutedEventArgs e)
         {
-
+            StartMenu window = new StartMenu();
+            window.Show();
+            this.Close();
         }
     }
 }

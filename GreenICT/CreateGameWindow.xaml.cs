@@ -49,5 +49,12 @@ namespace GreenICT
             //error message
             error_message.Visibility = Visibility.Visible;
         }
+
+        private void click_back(object sender, RoutedEventArgs e)
+        {
+            StartMenu window = new StartMenu();
+            window.Show();
+            this.Close();
+        }
     }
 }

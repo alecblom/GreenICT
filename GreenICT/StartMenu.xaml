@@ -24,6 +24,6 @@
             <Button Height="20" Width="85" Click="Button_Resume">Resume Game</Button>
         </StackPanel>
 
-        <Button Grid.Row="2" Grid.Column="1" Height="20" Width="130" Click="Button_Click">Add Game Object</Button>
+        <Button Grid.Row="2" Grid.Column="1" Height="20" Width="130" Click="Button_New_Game_Object">Add Game Object</Button>
     </Grid>
 </Window>

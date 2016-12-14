@@ -143,5 +143,12 @@ namespace GreenICT
         {
             return this.game;
         }
+
+        private void click_back(object sender, RoutedEventArgs e)
+        {
+            GameSelect window = new GameSelect();
+            window.Show();
+            this.Close();
+        }
     }
 }

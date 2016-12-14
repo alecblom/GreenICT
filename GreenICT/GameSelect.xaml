@@ -47,7 +47,7 @@
         </ScrollViewer>
         <Button 
         	x:Name="button" 
-        	Content="Confirm Selection" 
+        	Content="Back" 
         	Margin="0,25,25,0" Width="300" 
         	HorizontalAlignment="Right" 
         	Height="40" 
@@ -55,6 +55,7 @@
         	FontWeight="Bold"
         	Background="{StaticResource secondaryLight}"
         	Foreground="{StaticResource ResourceKey=secondaryDark}"
+            Click="click_back"
             />
 
 

@@ -45,5 +45,11 @@ namespace GreenICT
                 DatabaseHandler.CreateNewGameObject(name, type, url, description);
             }
         }
+        private void click_back(object sender, RoutedEventArgs e)
+        {
+            StartMenu window = new StartMenu();
+            window.Show();
+            this.Close();
+        }
     }
 }
