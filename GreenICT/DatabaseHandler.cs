@@ -88,6 +88,42 @@ namespace GreenICT
             return data;
         }
 
+        static public List<string> initGameObject(int objectId, int gameId)
+        {
+            List<string> data = new List<string>();
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+
+                MySqlCommand cmd = new MySqlCommand("SELECT value FROM metadata WHERE GameObject_GameObjectId = " + objectId, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    data.Add(reader["value"].ToString());
+                }
+
+                reader.Close();
+                cmd = new MySqlCommand("SELECT state FROM gameobject_has_game WHERE game_gameId = " + gameId + " AND gameobject_gameObjectId = " + objectId, conn);
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    data.Add(reader["state"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            return data;
+        }
+
         static public int CreateNewGameObject(string name, string type, string url, string description)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
@@ -240,7 +276,17 @@ namespace GreenICT
                     g.gameObjects.Add(go);
                 }
                 reader.Close();
-                cmd = new MySqlCommand("SELECT state FROM game WHERE gameId = " + g.id, conn);
+                cmd = new MySqlCommand("SELECT state, score, moves FROM game WHERE gameId = " + g.id, conn);
+                reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    g.state = reader["state"].ToString();
+                    int temp = 0;
+                    int.TryParse(reader["score"].ToString(), out temp);
+                    g.score = temp;
+                    int.TryParse(reader["moves"].ToString(), out temp);
+                    g.moves = temp;
+                }
                 g.state = cmd.ExecuteScalar().ToString();
             }
             catch (Exception ex)
@@ -262,12 +308,9 @@ namespace GreenICT
                 Console.WriteLine("Connecting to MySQL...");
                 conn.Open();
                 // Perform database operations
-                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO game(state) VALUES(\"started\")", conn);
+                MySqlCommand cmd1 = new MySqlCommand("INSERT INTO game(state, score, moves) VALUES(\"setup\", 0, 0)", conn);
                 cmd1.ExecuteNonQuery();
                 objID = (int)cmd1.LastInsertedId;
-                
-                
-
             }
             catch (Exception ex)
             {
@@ -278,7 +321,47 @@ namespace GreenICT
             return objID;
         }
 
-     
+
+
+        public static void SetGameScore(int id, int score)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd = new MySqlCommand("UPDATE game SET score = " + score + " WHERE gameId = " + id, conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+        }
+
+        public static void SetGameMoves(int id, int moves)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd = new MySqlCommand("UPDATE game SET moves = " + moves + " WHERE gameId = " + id, conn);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+        }
 
         public static void updateGameState(String state, int gameID)
         {

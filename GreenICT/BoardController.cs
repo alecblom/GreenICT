@@ -25,6 +25,10 @@ namespace GreenICT
         {
             this.curGame = game;
             size = game.getSize();
+            this.gameWindow.score = game.score;
+            this.gameWindow.moves = game.moves;
+            updateMoves();
+            updateScore();
             int col_count;
             int row_count;
             switch (size)
@@ -69,14 +73,25 @@ namespace GreenICT
             Image i;
             BitmapImage src;
             List<GameObject> gameObjects = curGame.getGameObjects();
-           
-
-
-
-            for (int outter = 0; outter < row_count - 1; outter++)
+            if (curGame.state == "started")
+            {
+                for(int j = 0; j < gameObjects.Count(); j++)
+                {
+                    GameObject temp = gameObjects[j];
+                    temp = new GameObject(temp.getId(), curGame.id);
+                    gameObjects[j] = temp;
+                }
+                gameObjects.AddRange(gameObjects);
+                gameObjects.OrderBy(a => Guid.NewGuid());
+            }
+            for (int outter = 0; outter < row_count; outter++)
             {
                 for (inner = 0; inner < col_count; inner++)
                 {
+                    int x = inner;
+                    int y = outter;
+                    GameObject go = gameObjects[imageIndex];
+
                     i = new Image();
                     src = new BitmapImage();
                     src.BeginInit();
@@ -93,42 +108,29 @@ namespace GreenICT
                     myBorder.BorderBrush = Brushes.Black;
                     myBorder.BorderThickness = new Thickness(1);
                     myBorder.Background = Brushes.MediumPurple;
-                    Grid.SetRow(myBorder, inner);
-                    Grid.SetColumn(myBorder, outter);
-                    Grid.SetRow(i, inner);
-                    Grid.SetColumn(i, outter);
+                    if (go.state == "1")
+                    {
+                        BitmapImage success_icon = new BitmapImage();
+                        success_icon.BeginInit();
+                        success_icon.UriSource = new Uri("C:\\AppImages\\success_icon.png", UriKind.Relative);
+                        success_icon.CacheOption = BitmapCacheOption.OnLoad;
+                        success_icon.EndInit();
+                        i.Name = "s";
+                        i.Opacity = 1;
+                        i.Source = success_icon;
+                    }
+                    Grid.SetRow(myBorder, y);
+                    Grid.SetColumn(myBorder, x);
+                    Grid.SetRow(i, y);
+                    Grid.SetColumn(i, x);
                     gameWindow.GameWindowGrid.Children.Add(myBorder);
                     gameWindow.GameWindowGrid.Children.Add(i);
                     imageIndex++;
                 }
-
-                i = new Image();
-                src = new BitmapImage();
-                src.BeginInit();
-                if (imageIndex == 24)
-                {
-                    break;
-                }
-                src.UriSource = new Uri(gameObjects[imageIndex].url, UriKind.Relative);
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.EndInit();
-                i.Source = src;
-                i.Stretch = Stretch.Uniform;
-                String name2 = gameObjects[imageIndex].getId().ToString();
-                i.Name = "o_" + name2;
-                i.Opacity = 0.0;
-
-                var myBorder2 = new Border();
-                myBorder2.BorderBrush = Brushes.Black;
-                myBorder2.BorderThickness = new Thickness(1);
-                myBorder2.Background = Brushes.MediumPurple;
-                Grid.SetRow(myBorder2, inner);
-                Grid.SetColumn(myBorder2, outter);
-                Grid.SetRow(i, inner);
-                Grid.SetColumn(i, outter);
-                gameWindow.GameWindowGrid.Children.Add(myBorder2);
-                gameWindow.GameWindowGrid.Children.Add(i);
-                imageIndex++;
+            }
+            if (curGame.state == "setup")
+            {
+                DatabaseHandler.updateGameState("started", curGame.id);
             }
         }
 
@@ -147,7 +149,6 @@ namespace GreenICT
                 id = id.Substring(2);
                 int x = Int32.Parse(id);
                 DatabaseHandler.updateGameObj_has_game(x, curGame.id, 1);
-
             }
             else
             {
