@@ -42,7 +42,7 @@ namespace GreenICT
             }
             else
             {
-                GameObject go = new GameObject(name, type, url, description);
+                DatabaseHandler.CreateNewGameObject(name, type, url, description);
             }
         }
     }
