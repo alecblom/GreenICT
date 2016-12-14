@@ -205,7 +205,7 @@ namespace GreenICT
         //TODO , take parameters to set x,y and state.
         //Rights now, state is always unflipped since this method is used for binding the gameobeject to the game for the first time
         //Updating will be done somwhere else
-        static public int bindGame_GameObj(int gameId,int gameObjId)
+        static public void bindGame_GameObj(int gameId,int gameObjId)
         {
             string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
             MySqlConnection conn = new MySqlConnection(connStr);
@@ -223,7 +223,27 @@ namespace GreenICT
             }
             conn.Close();
             Console.WriteLine("Done.");
-            return 1;
+        }
+
+        public static void updateGameState(String state, int gameID)
+        {
+            string connStr = "server=localhost;user=root;database=green_ict;port=3306;password=;";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                Console.WriteLine("Connecting to MySQL...");
+                conn.Open();
+                // Perform database operations
+                MySqlCommand cmd1 = new MySqlCommand("UPDATE game SET state=\""+state+"\" WHERE gameId="+gameID+";", conn);
+                cmd1.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            conn.Close();
+            Console.WriteLine("Done.");
+            
         }
         #endregion
 
