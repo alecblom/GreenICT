@@ -27,6 +27,7 @@ namespace GreenICT
         public int score;
         public int moves;
         private int curGameID;
+        private Game game;
         public BoardController b;
         public GameWindow(Game game)
         {
@@ -40,6 +41,7 @@ namespace GreenICT
             score = 0;
             moves = 0;
             curGameID = game.id;
+            this.game = game;
             b.updateScore();
             b.updateMoves();
             
@@ -96,17 +98,17 @@ namespace GreenICT
         private void button_Click_1(object sender, RoutedEventArgs e)
         {
             continue_button.Visibility = Visibility.Hidden; //Hide continue button
-
+            DatabaseHandler.SetGameMoves(game.id, moves);
             if (match)
             {
                 //Replace images with success icon
                 selectedObject.Source = success_icon;
                 selectedObject2.Source = success_icon;
-                
+
                 //Log to db
                 String name = selectedObject.Name;
                 name = name.Substring(2);
-                DatabaseHandler.InsertGameEvent(name, "matched", 1, curGameID);
+                DatabaseHandler.InsertGameEvent("Match_" + name, "move", 1, curGameID);
 
                 //Update selected object name so it wont count as a gamobject when checking matching images
                 selectedObject.Name = "s";
@@ -114,10 +116,19 @@ namespace GreenICT
 
                 //Add score
                 score++;
+                DatabaseHandler.SetGameScore(game.id, score);
                 b.updateScore();
             }
             else
             {
+                //Log to db
+                String name = selectedObject.Name;
+                name = name.Substring(2);
+                String name2 = selectedObject2.Name;
+                name2 = name2.Substring(2);
+                DatabaseHandler.InsertGameEvent("No match_" + name + "_" + name2, "move", 1, curGameID);
+                
+                
                 //Rehide images
                 selectedObject.Opacity = 0;
                 selectedObject2.Opacity = 0;
@@ -126,6 +137,18 @@ namespace GreenICT
             b.updateInfoText(1);
             selectedObject = null;
             selectedObject2 = null;
+        }
+
+        public Game GetGame()
+        {
+            return this.game;
+        }
+
+        private void click_back(object sender, RoutedEventArgs e)
+        {
+            StartMenu window = new StartMenu();
+            window.Show();
+            this.Close();
         }
     }
 }

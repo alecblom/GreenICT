@@ -10,16 +10,16 @@
         Background="{StaticResource primaryLight}"
         ResizeMode="NoResize">
 
-    
+
     <StackPanel Name="wrapPanel" Orientation="Horizontal">
-        
+
         <StackPanel Name="leftPanel" Orientation="Vertical" Width="375">
             <TextBlock FontSize="30" FontWeight="Bold" x:Name="textBlock" TextWrapping="Wrap" Text="Select Desired boardsize: " Margin="0,10,0,0" HorizontalAlignment="Center"/>
             <RadioButton  x:Name="radioButton_20" Content="Small (4x5)" Margin="25,25,0,0" FontSize="15" FontWeight="Bold"/>
             <RadioButton x:Name="radioButton_30" Content="Large (5x6)" Margin="25,25,0,0" FontSize="15" FontWeight="Bold"/>
             <TextBlock x:Name="error_message" FontSize="20" FontWeight="Bold" Foreground="Firebrick" TextWrapping="Wrap" Text="Please select desired boardsize and players before continuing !" Visibility="Hidden" Margin="25,80,0,0"  />
         </StackPanel>
-        
+
         <Rectangle HorizontalAlignment="Left" Width="5px" Margin="0,10,0,10" Height="500" Fill="{StaticResource secondaryLight}"></Rectangle>
 
         <StackPanel Name="rightPanel" Orientation="Vertical" Width="367">
@@ -28,10 +28,13 @@
             <RadioButton x:Name="radioButton_2" Content="Two" Margin="25,25,0,0" FontSize="15" FontWeight="Bold" IsEnabled="False"/>
             <RadioButton x:Name="radioButton_3" Content="Three" Margin="25,25,0,0" FontSize="15" FontWeight="Bold" IsEnabled="False"/>
             <RadioButton x:Name="radioButton_4" Content="Four" Margin="25,25,0,0" FontSize="15" FontWeight="Bold" IsEnabled="False"/>
-            <Button Height="Auto" FontSize="15" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,40,20,0" Content="Confirm" Click="Button_Click"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Height="Auto" FontSize="15" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,40,20,0" Content="Confirm" Click="Button_Click"/>
+                <Button Height="Auto" FontSize="15" Width="150" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,40,28.2,0" Content="Back" Click="click_back"/>
+            </StackPanel>
         </StackPanel>
-        
-       
-    
-     </StackPanel>
+
+
+
+    </StackPanel>
 </Window>

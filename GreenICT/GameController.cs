@@ -17,27 +17,10 @@ namespace GreenICT.Controller
         {
 
             //Get all game objects
-            List<GameObject> ret = DatabaseHandler.getGameObjects();             //List used to store return value from database
-            List<GameObject> randomgameObjects = new List<GameObject>();  //List used to store randomly chosen objects
+            List<GameObject> ret = DatabaseHandler.getRandomGameObjects(gameObj_amount / 2);             //List used to store return value from database
             List<GameObject> finalgameObjects;
           
-            //Get required amount of random gameobjs from ret
-            if ((gameObj_amount / 2) > ret.Count)
-            {
-                Console.WriteLine("Not enough game objects to create this game !");
-                return null;
-            }
-            else
-            {
-                Random rnd = new Random();
-                for (int c = 0; c < gameObj_amount / 2; c++)
-                {
-                    int r = rnd.Next(ret.Count);
-                    randomgameObjects.Add(ret[r]);
-                    ret.Remove(ret[r]);  //Remove added value so we dont end up adding the same gameobject twice
-                }
-                
-            }
+           
             //insert new game and get its id
             int newGameId = DatabaseHandler.createGame();
             if (newGameId == 0)
@@ -47,18 +30,21 @@ namespace GreenICT.Controller
             else
             {
                 //Bind used gameobjects to this id
-                foreach (GameObject gameObj in randomgameObjects)
+                foreach (GameObject gameObj in ret)
                 {
                     DatabaseHandler.bindGame_GameObj(newGameId, gameObj.getId());
                 }
             }
             //Copy and scatter game objects
-            finalgameObjects = new List<GameObject>(randomgameObjects);
-            finalgameObjects.AddRange(randomgameObjects);
+            finalgameObjects = new List<GameObject>(ret);
+            finalgameObjects.AddRange(ret);
             shuffle(finalgameObjects);
 
+            //Save a game event stating we created this new game
+            DatabaseHandler.InsertGameEvent("game_" + newGameId, "setup", 1, newGameId);
+
             //Save all this to a game object
-            return new Game(newGameId, finalgameObjects,gameObj_amount);
+            return new Game(newGameId, finalgameObjects,gameObj_amount, "setup");
         }
 
 

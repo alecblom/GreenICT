@@ -13,6 +13,7 @@ namespace GreenICT
         private string type;
         public string url { get; set; }
         private string description;
+        public string state { get; set; }
 
         public GameObject(int id)
         {
@@ -22,6 +23,17 @@ namespace GreenICT
             type = data[1];
             url = data[2];
             description = data[3];
+        }
+
+        public GameObject(int objectId, int gameId)
+        {
+            this.id = objectId;
+            List<string> data = DatabaseHandler.initGameObject(id, gameId);
+            name = data[0];
+            type = data[1];
+            url = data[2];
+            description = data[3];
+            state = data[4];
         }
 
         public GameObject(string name, string type, string url, string description)
