@@ -190,6 +190,8 @@ namespace GreenICT
             {
                 gameWindow.score_text.Text = "Game finished !";
                 DatabaseHandler.updateGameState("Finished",curGame.id);
+                DatabaseHandler.InsertGameEvent("game_" + curGame.id, "finished", 1, curGame.id);
+                gameWindow.info_text.Visibility = Visibility.Hidden;
             }
             else
             {

@@ -57,6 +57,9 @@ namespace GreenICT.Controller
             finalgameObjects.AddRange(randomgameObjects);
             shuffle(finalgameObjects);
 
+            //Save a game event stating we created this new game
+            DatabaseHandler.InsertGameEvent("game_" + newGameId, "started", 1, newGameId);
+
             //Save all this to a game object
             return new Game(newGameId, finalgameObjects,gameObj_amount);
         }
